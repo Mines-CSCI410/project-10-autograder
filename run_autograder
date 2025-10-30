@@ -1,0 +1,27 @@
+#!/bin/bash
+
+EXECUTABLE=./virtualmachine
+
+cd /autograder/grader
+mkdir /autograder/results
+mkdir /autograder/source
+
+chmod o= /autograder/submission
+chmod o= /autograder/results
+chmod +rwx /autograder/source
+
+cp /autograder/submission/ /autograder/source/
+
+pushd /autograder/source/
+rm *.asm *.hack
+cp /autograder/grader/tests/*.asm .
+
+chmod +x ./setup.sh
+runuser -u student -- ./setup.sh
+
+rm *.hack
+chmod +x "${EXECUTABLE}"
+runuser -u student -- ls *.asm | xargs -I{} ${EXECUTABLE} $(pwd)/{}
+
+popd
+uv run src/run_tests.py
