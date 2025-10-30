@@ -1,4 +1,4 @@
-FROM gradescope/autograder-base:ubuntu-jammy
+FROM gradescope/autograder-base:ubuntu-jammy-jdk17
 
 # Install uv package manager
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
@@ -16,9 +16,20 @@ apt-get install -y\
     golang\
     python3\
     python3-pip\
+    git\
     python3-dev
 
-# Change the working directory to the `app` directory
+WORKDIR /
+ENV EXPECTED_HASH="b1c0900d2fd0211ae91f03d8680ba27b  -"
+RUN git clone https://github.com/kishy-codes/nand2tetris.git
+RUN test "$EXPECTED_HASH" = "$(git -C nand2tetris log -n 1 | md5sum)"
+RUN chmod +x /nand2tetris/tools/*.sh
+RUN ln -s /nand2tetris/tools/Assembler.sh /usr/bin/n2tAssembler 
+RUN ln -s /nand2tetris/tools/HardwareSimulator.sh /usr/bin/n2tHardwareSimulator 
+RUN ln -s /nand2tetris/tools/VMEmulator.sh /usr/bin/n2tVMEmulator 
+RUN ln -s /nand2tetris/tools/CPUEmulator.sh /usr/bin/n2tCPUEmulator 
+RUN ln -s /nand2tetris/tools/JackCompiler.sh /usr/bin/n2tJackCompiler 
+
 WORKDIR /autograder/grader
 
 # Install dependencies
