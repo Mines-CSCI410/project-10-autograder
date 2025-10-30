@@ -14,7 +14,7 @@ cp /autograder/submission/ /autograder/source/
 
 pushd /autograder/source/
 rm *.asm *.hack
-cp /autograder/grader/tests/*.asm .
+cp /autograder/grader/tests/*.{vm,tst} .
 
 chmod +x ./setup.sh
 runuser -u student -- ./setup.sh
