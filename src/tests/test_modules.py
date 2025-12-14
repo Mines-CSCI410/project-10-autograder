@@ -17,7 +17,7 @@ class TestBase(unittest.TestCase):
     def runCPUEmulator(self, dirname, name):
         res = subprocess.call(['n2tCPUEmulator', f'/autograder/source/{dirname}/{name}.tst'])
         if res != 0:
-            diff = subprocess.check_output(['diff', f'/autograder/source/{dirname}/{name}.out', f'/autograder/source/{dirname}/{name}.cmp', '-qsw', '--strip-trailing-cr'])
+            diff = subprocess.check_output(['diff', f'/autograder/source/{dirname}/{name}.out', f'/autograder/source/{dirname}/{name}.cmp', '-qsw', '--strip-trailing-cr'], stderr=subprocess.STDOUT)
             print(f'Files differ!\n{diff}')
             raise AssertionError(f'Unable to run student\'s ASM on CPU emulator!')
 
