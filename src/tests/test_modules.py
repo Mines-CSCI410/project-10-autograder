@@ -17,7 +17,7 @@ class TestBase(unittest.TestCase):
     def runCPUEmulator(self, dirname, name):
         res = subprocess.call(['n2tCPUEmulator', f'/autograder/source/{dirname}/{name}.tst'])
         if res != 0:
-            diff = subprocess.check_output(['/bin/sh', '-c', f'diff /autograder/source/{dirname}/{name}.cmp /autograder/source/{dirname}/{name}.out --strip-trailing-cr ; exit 0'])
+            diff = subprocess.check_output(['/bin/sh', '-c', f'diff /autograder/source/{dirname}/{name}.cmp /autograder/source/{dirname}/{name}.out --strip-trailing-cr ; exit 0'], text=True)
             print(f'Files differ!\n{diff}')
             raise AssertionError(f'Student\'s ASM did not pass the provided TST file!')
 
