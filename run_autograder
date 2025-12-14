@@ -1,20 +1,20 @@
 #!/bin/bash
 
-EXECUTABLE=./VMtranslator
+EXECUTABLE=./JackAnalyzer
 
 cp -r /autograder/submission/* /autograder/source/
 
 pushd /autograder/source/ >/dev/null
 
-# remove any tst, vm, or cmp files in submission
-rm -f *.vm *.tst *.cmp
+# remove any jack or xml files in submission
+rm -f *.jack *.xml
 
 # run student-submitted setup script (untrusted)
 chmod +x ./setup.sh
 runuser -u student -- ./setup.sh
 
-# in case setup.sh created hack files
-rm -f *.asm *.cmp
+# in case setup.sh created jack or xml files
+rm -f *.jack *.xml
 
 chmod ugo+x "${EXECUTABLE}"
 
