@@ -16,8 +16,8 @@ class TestBase(unittest.TestCase):
             print(f'Files differ!\n{diff}')
             raise AssertionError(f'Student\'s XML did not match the provided XML file!')
 
-    def assertCorrectTranslator(self, dirname):
-        _, name = dirname.split('/')
+    def assertCorrectTranslator(self, testpath):
+        dirname, name = testpath.split('/')
         self.runStudentCode(dirname, name)
         self.asserDiffMatch(dirname, name)
         subprocess.run(['mv', f'/autograder/source/{dirname}/{name}.xml', '/autograder/outputs/'])

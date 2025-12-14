@@ -5,7 +5,7 @@ EXECUTABLE=./JackAnalyzer
 pushd /autograder/source/ >/dev/null
 
 # remove old files
-rm -f *.{xml} ./${1}
+rm -rf ./${1}
 
 # copy test files over
 mkdir -p ./${1}
