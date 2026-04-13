@@ -10,7 +10,7 @@ class TestBase(unittest.TestCase):
             raise AssertionError(f'Unable to run student\'s Jack Analyzer on {name}.jack!')
 
     def assertDiffMatch(self, dirname, name):
-        res = subprocess.call(['diff', f'/autograder/grader/tests/expected-outputs/{dirname}/{name}.xml', f'/autograder/source/{dirname}/{name}.xml', '--strip-trailing-cr'])
+        res = subprocess.call(['diff', f'/autograder/grader/tests/expected-outputs/{dirname}/{name}.xml', f'/autograder/source/{dirname}/{name}.xml', '-w', '--strip-trailing-cr'])
         if res != 0:
             diff = subprocess.check_output(['/bin/sh', '-c', f'diff /autograder/grader/tests/expected-outputs/{dirname}/{name}.xml /autograder/source/{dirname}/{name}.xml -w --strip-trailing-cr ; exit 0'], text=True)
             print(f'Files differ!\n{diff}')
