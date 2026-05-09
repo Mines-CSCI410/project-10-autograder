@@ -25,12 +25,12 @@ class TestBase(unittest.TestCase):
 
     def assertFileExists(self, path):
         if not os.path.isfile(path):
-            raise AssertionError(f'File {path} does not exist!')
+            raise AssertionError(f'File "{path}" does not exist!')
 
     def assertCorrectAnalyzer(self, testpath):
         dirname, name = testpath.split('/')
         self.runStudentCode(dirname, name)
-        self.assertFileExists(f'{testpath}.xml')
+        self.assertFileExists(f'/autograder/source/{dirname}/{name}.xml')
         self.assertDiffMatch(dirname, name)
 
 class TestModules(TestBase): 
