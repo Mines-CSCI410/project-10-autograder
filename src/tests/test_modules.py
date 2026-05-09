@@ -3,13 +3,13 @@ import subprocess
 
 from gradescope_utils.autograder_utils.decorators import weight, number
 class TestBase(unittest.TestCase): 
-    def runStudentCode(self, dirname):
+    def runStudentCode(self, dirname, name):
         try:
             process = subprocess.run(['./run_student_code.sh', dirname], check=True, text=True, capture_output=True, timeout=30)
             print(f'{process.stdout.strip()}\n{process.stderr.strip()}'.strip())
         except subprocess.CalledProcessError as err:
             error_message = str(err.stderr).strip()
-            raise AssertionError(f'Unable to run student code on {dirname}: "{error_message}"\n{err.stdout}'.strip())
+            raise AssertionError(f'Unable to run student code on {dirname}/{name}.jack: "{error_message}"\n{err.stdout}'.strip())
         except subprocess.TimeoutExpired as err:
             raise TimeoutError(f'Student code timed out after {err.timeout} seconds:\n{str(err.stdout).strip()}')
 
