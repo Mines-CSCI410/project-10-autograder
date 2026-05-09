@@ -1,4 +1,5 @@
 import unittest
+import os
 import subprocess
 
 from gradescope_utils.autograder_utils.decorators import weight, number
@@ -22,9 +23,14 @@ class TestBase(unittest.TestCase):
         elif res > 1:
             raise AssertionError(f'Unable to diff output xml with expected!')
 
+    def assertFileExists(self, path):
+        if not os.path.isfile(path):
+            raise AssertionError(f'File {path} does not exist!')
+
     def assertCorrectAnalyzer(self, testpath):
         dirname, name = testpath.split('/')
         self.runStudentCode(dirname, name)
+        self.assertFileExists(f'{testpath}.xml')
         self.assertDiffMatch(dirname, name)
 
 class TestModules(TestBase): 
