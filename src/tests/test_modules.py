@@ -15,10 +15,12 @@ class TestBase(unittest.TestCase):
 
     def assertDiffMatch(self, dirname, name):
         res = subprocess.call(['diff', f'/autograder/grader/tests/expected-outputs/{dirname}/{name}.xml', f'/autograder/source/{dirname}/{name}.xml', '-w', '--strip-trailing-cr'])
-        if res != 0:
+        if res == 1:
             diff = subprocess.check_output(['/bin/sh', '-c', f'diff /autograder/grader/tests/expected-outputs/{dirname}/{name}.xml /autograder/source/{dirname}/{name}.xml -w --strip-trailing-cr ; exit 0'], text=True)
             print(f'Files differ!\n{diff}')
             raise AssertionError(f'Student\'s XML did not match the provided XML file!')
+        elif res > 1:
+            raise AssertionError(f'Unable to diff output xml with expected!')
 
     def assertCorrectAnalyzer(self, testpath):
         dirname, name = testpath.split('/')
