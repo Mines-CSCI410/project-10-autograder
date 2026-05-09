@@ -2,12 +2,16 @@ import unittest
 import subprocess
 
 from gradescope_utils.autograder_utils.decorators import weight, number
-
 class TestBase(unittest.TestCase): 
-    def runStudentCode(self, dirname, name):
-        res = subprocess.call(['./run_student_code.sh', dirname])
-        if res != 0:
-            raise AssertionError(f'Unable to run student\'s Jack Analyzer on {name}.jack!')
+    def runStudentCode(self, dirname):
+        try:
+            process = subprocess.run(['./run_student_code.sh', dirname], check=True, text=True, capture_output=True, timeout=30)
+            print(f'{process.stdout.strip()}\n{process.stderr.strip()}'.strip())
+        except subprocess.CalledProcessError as err:
+            error_message = str(err.stderr).strip()
+            raise AssertionError(f'Unable to run student code on {dirname}: "{error_message}"\n{err.stdout}'.strip())
+        except subprocess.TimeoutExpired as err:
+            raise TimeoutError(f'Student code timed out after {err.timeout} seconds:\n{str(err.stdout).strip()}')
 
     def assertDiffMatch(self, dirname, name):
         res = subprocess.call(['diff', f'/autograder/grader/tests/expected-outputs/{dirname}/{name}.xml', f'/autograder/source/{dirname}/{name}.xml', '-w', '--strip-trailing-cr'])
