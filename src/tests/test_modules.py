@@ -24,7 +24,6 @@ class TestBase(unittest.TestCase):
         dirname, name = testpath.split('/')
         self.runStudentCode(dirname, name)
         self.assertDiffMatch(dirname, name)
-        subprocess.run(['mv', f'/autograder/source/{dirname}/{name}.xml', '/autograder/outputs/'])
 
 class TestModules(TestBase): 
     @weight(47.5/3)
